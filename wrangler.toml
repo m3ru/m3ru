@@ -1,0 +1,4 @@
+# wrangler.toml
+name = "personalwebsite"
+main = "index.html"      # or "src/index.js" / built worker file
+compatibility_date = "2025-09-05"

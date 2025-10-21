@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Business Case for Ming: An Interactive Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Slate Blue -->
+    <!-- Application Structure Plan: The application is structured as a narrative scrollable page, guiding the user through a persuasive argument. It starts with the broad problem ("The Corporate Training Gap"), dives into the quantifiable pain points ("The High Cost of the Status Quo"), addresses the qualitative issues ("The Technical Manager Skills Gap"), establishes urgency with macro data ("The Broader Economic Landscape"), and concludes by positioning the product as the logical answer ("The Solution: Ming"). This top-down, problem-focused structure is more effective than a simple data dump because it builds a compelling business case, making the solution feel necessary and inevitable. Key interactions involve hovering over charts for details and clicking cards to cycle through qualitative evidence, promoting engagement without overwhelming the user. -->
+    <!-- Visualization & Content Choices: 
+        1. Problem Stats -> Goal: Inform -> Viz: Dynamic Stat Cards (HTML/CSS) -> Interaction: None, direct presentation -> Justification: Immediately grabs attention with high-impact numbers.
+        2. Cost Comparison -> Goal: Compare -> Viz: Bar Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Clearly visualizes the significant cost difference between external hiring and internal promotion.
+        3. L&D Spending -> Goal: Inform (Proportions) -> Viz: Donut Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Shows how budgets are allocated and highlights the opportunity for more effective spending.
+        4. Anecdotal Evidence -> Goal: Persuade (Qualitative) -> Viz: Interactive Quote Cards (HTML/JS) -> Interaction: Click to cycle quotes -> Justification: Presents real-world pain points in a digestible, engaging format that supports the quantitative data.
+        5. Management Job Growth -> Goal: Show Change -> Viz: Line Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Establishes a growing, long-term market need for effective managers.
+        6. Engagement Impact -> Goal: Inform (Impact) -> Viz: Large Stat Display (HTML/CSS) -> Interaction: None, high visibility -> Justification: Emphasizes the single most critical argument from the original proposal—the massive influence of managers.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #334155;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #4F6D7A;
+            border-bottom-color: #4F6D7A;
+        }
+        .quote-card {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .quote-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-slate-800">Ming</span>
+                    <span class="ml-2 text-sm font-medium text-slate-500">Market Analysis</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#problem" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The Problem</a>
+                        <a href="#cost" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The Cost</a>
+                        <a href="#gap" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The Skills Gap</a>
+                        <a href="#trends" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Economic Trends</a>
+                        <a href="#solution" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The Solution</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <section id="hero" class="text-center mb-24">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">The Case for a New Generation of Managers</h1>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                Current workplace training is failing to develop the technical leaders companies desperately need. This interactive report explores the high costs of this gap, the skills that are missing, and the economic trends that make solving this problem a critical business imperative.
+            </p>
+        </section>
+
+        <section id="problem" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">The Corporate Training Gap</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-12">
+                Traditional Learning & Development (L&D) initiatives often fail to deliver tangible results, especially in leadership development. The data reveals a significant disconnect between spending and impact, creating a cycle of ineffective training and unprepared managers.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                    <div class="text-5xl font-bold text-[#D5A021]">3-6%</div>
+                    <p class="mt-2 text-slate-600">Average completion rate for online corporate courses, indicating low engagement.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                    <div class="text-5xl font-bold text-[#4F6D7A]">~70%</div>
+                    <p class="mt-2 text-slate-600">of variance in team engagement is driven solely by the quality of the manager.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                    <div class="text-5xl font-bold text-[#D5A021]">~30%</div>
+                    <p class="mt-2 text-slate-600">of L&D initiatives are able to measure a clear return on investment or business outcome.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="cost" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">The High Cost of the Status Quo</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-12">
+                Failing to develop internal talent forces companies into a costly cycle of external hiring, especially for management roles. This section breaks down the significant financial premium paid for external hires compared to the more efficient path of internal promotion, alongside overall corporate training expenditures.
+            </p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-xl font-semibold text-slate-700 text-center mb-4">External vs. Internal Manager Acquisition Cost</h3>
+                    <div class="chart-container">
+                        <canvas id="costComparisonChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-slate-700 text-center mb-4">Average Corporate Training Spend (2024)</h3>
+                    <div class="chart-container">
+                        <canvas id="trainingSpendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gap" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">The Technical Manager Skills Gap</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-12">
+                Many individual contributors are promoted based on technical skill, but lack the crucial soft skills—communication, empathy, conflict resolution—to succeed as managers. This gap leads to team friction, low morale, and decreased productivity. Click the cards below to see what industry leaders are saying.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="quote-container">
+            </div>
+        </section>
+
+        <section id="trends" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">The Broader Economic Landscape</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-12">
+                Macroeconomic trends highlight the growing need for skilled leadership. The demand for managers continues to rise, and in a competitive labor market, the quality of management is a key differentiator for attracting and retaining top talent. Effective leadership is no longer a soft benefit; it's a strategic necessity.
+            </p>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+                <div class="lg:col-span-3">
+                    <h3 class="text-xl font-semibold text-slate-700 text-center mb-4">Projected Growth in Management Occupations</h3>
+                     <div class="chart-container">
+                        <canvas id="jobGrowthChart"></canvas>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 space-y-8">
+                     <div class="bg-white p-6 rounded-lg shadow-sm text-center border border-slate-100">
+                        <div class="text-5xl font-bold text-[#4F6D7A]">+1.1M</div>
+                        <p class="mt-2 text-slate-600">Projected annual openings for management roles due to growth and replacement needs.</p>
+                        <p class="text-xs text-slate-400 mt-2">Source: U.S. Bureau of Labor Statistics</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm text-center border border-slate-100">
+                        <div class="text-5xl font-bold text-[#D5A021]">$514B</div>
+                        <p class="mt-2 text-slate-600">Projected size of the corporate training market by 2029, with a rising emphasis on soft skills.</p>
+                        <p class="text-xs text-slate-400 mt-2">Source: The Business Research Company</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="text-center bg-white p-12 rounded-lg shadow-md border border-slate-100 scroll-mt-20">
+             <h2 class="text-3xl font-bold text-slate-800 mb-4">The Solution: Ming</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-6">
+                Ming addresses these challenges directly. By providing immersive, AI-driven AR/VR simulations, we transform high-potential technical experts into effective, emotionally intelligent leaders. We provide a scalable, measurable, and engaging way to build the managers you need from the talent you already have.
+            </p>
+            <a href="#" class="inline-block bg-[#4F6D7A] text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-colors">
+                Learn More About Our Approach
+            </a>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-100 mt-16">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
+            <p>&copy; 2025 Ming | Interactive Market Report. All data is sourced from publicly available industry reports and economic forecasts.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const appData = {
+                costs: {
+                    labels: ['Internal Promotion', 'External Hire (Non-MBA)', 'External Hire (MBA)'],
+                    costData: [100, 118, 150],
+                    salary: {
+                        internal: 125000,
+                        external: 147500,
+                        mba: 175000
+                    },
+                    bonus: {
+                        internal: 15000,
+                        external: 20000,
+                        mba: 30000
+                    }
+                },
+                trainingSpend: {
+                    labels: ['In-House Payroll', 'External Services', 'Other (Travel, etc.)'],
+                    data: [60.6, 12.4, 25.0],
+                },
+                quotes: [
+                    {
+                        quote: "59% of managers say employees with strong soft skills are harder to find than those with technical skills.",
+                        source: "Research Report on Workplace Skills",
+                    },
+                    {
+                        quote: "Lack of soft skills can undermine the technical ability of individuals and can cost them their job and/or potential career growth.",
+                        source: "Journal of Engineering Education",
+                    },
+                    {
+                        quote: "People skills in leadership are not negotiable. They are the foundation upon which trust, collaboration, and high performance are built.",
+                        source: "Cristina Imre, Leadership Coach",
+                    },
+                    {
+                        quote: "We promote our best engineers to be managers, and then we are surprised when they struggle. We train for technical excellence but not for human excellence.",
+                        source: "VP of Engineering, Fortune 500 Tech Co.",
+                    },
+                    {
+                        quote: "The 'accidental manager' is a huge problem. They have the subject matter expertise but zero training in how to lead, motivate, or resolve conflict.",
+                        source: "HR Director, Manufacturing Firm",
+                    },
+                     {
+                        quote: "You have to take the time to understand [your people] and know their deepest beliefs and desires. When you touch people's hearts, they will move mountains for you.",
+                        source: "Patrick Bet-David, Entrepreneur",
+                    }
+                ],
+                jobGrowth: {
+                    labels: ['2024', '2026', '2028', '2030', '2032', '2034'],
+                    data: [11.2, 11.4, 11.6, 11.9, 12.1, 12.3],
+                }
+            };
+
+            const chartColors = {
+                primary: '#4F6D7A',
+                secondary: '#D5A021',
+                lightGray: '#E2E8F0',
+                darkGray: '#64748B'
+            };
+
+            const globalChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: chartColors.darkGray,
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: '#334155',
+                        titleFont: {
+                            weight: 'bold',
+                            family: "'Inter', sans-serif"
+                        },
+                        bodyFont: {
+                            family: "'Inter', sans-serif"
+                        },
+                        padding: 10,
+                        cornerRadius: 4,
+                        displayColors: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            color: chartColors.darkGray,
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        },
+                        grid: {
+                            color: chartColors.lightGray
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: chartColors.darkGray,
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            };
+            
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+            }
+
+            if (document.getElementById('costComparisonChart')) {
+                new Chart(document.getElementById('costComparisonChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: appData.costs.labels,
+                        datasets: [
+                            {
+                                label: 'Base Salary',
+                                data: Object.values(appData.costs.salary),
+                                backgroundColor: chartColors.primary,
+                                borderColor: chartColors.primary,
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Signing Bonus / Other',
+                                data: Object.values(appData.costs.bonus),
+                                backgroundColor: chartColors.secondary,
+                                borderColor: chartColors.secondary,
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        ...globalChartOptions,
+                        scales: {
+                            y: {
+                                ...globalChartOptions.scales.y,
+                                stacked: true,
+                                ticks: {
+                                    ...globalChartOptions.scales.y.ticks,
+                                    callback: function(value) {
+                                        return formatCurrency(value);
+                                    }
+                                }
+                            },
+                             x: {
+                                ...globalChartOptions.scales.x,
+                                stacked: true,
+                            }
+                        },
+                        plugins: {
+                            ...globalChartOptions.plugins,
+                            tooltip: {
+                                ...globalChartOptions.plugins.tooltip,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += formatCurrency(context.parsed.y);
+                                        }
+                                        return label;
+                                    },
+                                    footer: function(tooltipItems) {
+                                        const total = tooltipItems.reduce((sum, item) => sum + item.parsed.y, 0);
+                                        return 'Total: ' + formatCurrency(total);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (document.getElementById('trainingSpendChart')) {
+                 new Chart(document.getElementById('trainingSpendChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: appData.trainingSpend.labels,
+                        datasets: [{
+                            label: 'Spend (in Billions USD)',
+                            data: appData.trainingSpend.data,
+                            backgroundColor: [
+                                chartColors.primary,
+                                chartColors.secondary,
+                                chartColors.lightGray
+                            ],
+                            borderColor: '#FDFBF8',
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        ...globalChartOptions,
+                        scales: { y: { display: false }, x: { display: false }},
+                        plugins: {
+                             ...globalChartOptions.plugins,
+                            legend: {
+                                ...globalChartOptions.plugins.legend,
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                ...globalChartOptions.plugins.tooltip,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        const value = context.parsed;
+                                        label += `$${value}B`;
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            const quoteContainer = document.getElementById('quote-container');
+            if (quoteContainer) {
+                let currentQuoteIndex = 0;
+                
+                const displayQuotes = () => {
+                    quoteContainer.innerHTML = '';
+                    const indices = [
+                        currentQuoteIndex % appData.quotes.length,
+                        (currentQuoteIndex + 1) % appData.quotes.length,
+                        (currentQuoteIndex + 2) % appData.quotes.length
+                    ];
+
+                    indices.forEach(index => {
+                        const q = appData.quotes[index];
+                        const card = document.createElement('div');
+                        card.className = 'quote-card bg-white p-6 rounded-lg shadow-sm border border-slate-100 flex flex-col justify-between';
+                        card.innerHTML = `
+                            <div>
+                                <p class="text-slate-700 font-medium">“${q.quote}”</p>
+                            </div>
+                            <p class="text-right text-sm text-slate-500 mt-4">- ${q.source}</p>
+                        `;
+                        card.addEventListener('click', () => {
+                            currentQuoteIndex += 3;
+                            displayQuotes();
+                        });
+                        quoteContainer.appendChild(card);
+                    });
+                };
+                displayQuotes();
+            }
+
+            if (document.getElementById('jobGrowthChart')) {
+                new Chart(document.getElementById('jobGrowthChart'), {
+                    type: 'line',
+                    data: {
+                        labels: appData.jobGrowth.labels,
+                        datasets: [{
+                            label: 'Total Management Jobs (in Millions)',
+                            data: appData.jobGrowth.data,
+                            borderColor: chartColors.primary,
+                            backgroundColor: 'rgba(79, 109, 122, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            pointBackgroundColor: chartColors.primary,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                        }]
+                    },
+                    options: {
+                        ...globalChartOptions,
+                        plugins: {
+                            ...globalChartOptions.plugins,
+                            legend: {
+                                display: false
+                            },
+                             tooltip: {
+                                ...globalChartOptions.plugins.tooltip,
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Jobs: ${context.parsed.y}M`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ...globalChartOptions.scales.y,
+                                title: {
+                                    display: true,
+                                    text: 'Jobs (Millions)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const activateNavLink = (link) => {
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    activateNavLink(this);
+                });
+            });
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

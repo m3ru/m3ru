@@ -1,0 +1,98 @@
+*:focus         { outline: none}
+::selection       { background-color: #5f5f5f; opacity:1.0; color:#ffffff; padding:10px; /* Safari */ }
+
+body { background-color:#fff; color:#000; overflow-x: hidden; font-family: sans-serif; padding:0; margin:0; position: absolute;}
+header { padding: 30px }
+
+@font-face {
+  font-family: 'Gauvine'; /*a name to be used later*/
+  src: url('./fonts/Gauvine.otf'); /*URL to font*/
+}
+
+nav { padding: 45px; margin-top: -45px; float: left; }
+nav details summary { margin-bottom: 30px }
+nav .site-nav section { line-height: 22px; margin-bottom: 25px;}
+nav .site-nav section h2 { margin: 20px 0 10px 0; }
+nav .site-nav section ul { margin: 0px; padding: 0px; }
+/* nav h2.self:before { content:"[" }
+nav h2.self:after { content:"]" } */
+nav h2 { color:rgb(0, 0, 0); font-family:'Gauvine';}
+nav a.self:before { content:"> " }
+/*nav a.self:after { content:">" }*/
+/* nav a.self { color:#fff} */
+
+main { padding: 15px; float:left; max-width:1000px; }
+main p { line-height: 1.5; }
+main article { border-left:5px solid #ffffff;padding-left:25px;clear:both }
+main img { width:100%; max-width: 600px; margin-bottom: 5px; padding:5px}
+main figure { margin-left: -2px; }
+main figcaption {margin-bottom: 15px; clear: both}
+main a:before { content:"{" }
+main a:after { content:"}" }
+main a.blank:before { content:"" }
+main a.blank:after { content:"" }
+main > * { max-width: 900px; margin-bottom: 30px }
+main code {font-family: monospace; font-size: 130%;}
+
+
+footer { line-height: 30px; clear:both; padding:45px; }
+footer hr { margin-bottom: 15px }
+
+.col2 { columns: 2 }
+.column { float: left; width: 33.33%; padding: 15px; }
+.column2 { float: left; width: 48.0%; padding: 5px; }
+/* Clearfix (clear floats) */
+.row::after { content: ""; clear: both; display: table; }
+/*.capital { text-transform: capitalize }*/
+.notice { padding:20px; border:2px solid black;  }
+.dot { height: 25px; width: 25px; background-color: #bbb; border-radius: 50%; display: inline-block; }
+ul.nobull li {list-style-type: none}
+mark { background-color: #b9b9b9; color: black; }
+
+
+/* Theme */
+
+@media (prefers-color-scheme: dark) {
+    body {background-color: #ececec; color: rgb(0, 0, 0)}
+    body header a img { filter: invert(1)}
+    body a { color: rgb(27, 27, 27); }
+    body a:hover {color: rgb(255, 255, 255); background-color: #000000;}
+    body a.blank:hover { color:unset; background-color: unset;}
+    body a.self:before { content:"> " }
+    main > pre { overflow:auto; background-color: white; color:#000; padding:10px; }
+    main > code { background-color:white; color:#000}
+    body select { color: black; background-color: white;}
+    main .project { border-left:2px solid white }
+    .notice { border-color:white; }
+    .mono { filter: invert(1) }
+    main .progress > div { background-color: white}
+    main .progress > div > span { color: black}
+    main q { font-family:serif;font-size:18px;font-style:italic;display:block;max-width:450px }  
+  }
+  
+  /* Mobile */
+  
+  @media (max-width: 1100px) {
+    nav { width: 100%; }
+      nav .site-nav section { float: left; margin: 0 10px 10px 0; }
+      nav .site-nav section:nth-child(5n + 1) { clear: left; }
+  }
+  @media (max-width: 1100px) and (min-width: 651px) {
+    nav .site-nav section { width: calc(25% - 10px); }
+    nav .site-nav section:nth-child(5n + 1) { clear: left; }
+  }
+  
+  /* @media (max-width: 650px) and (min-width: 501px) {
+    nav .site-nav section { width: calc(33% - 10px); }
+    nav .site-nav section:nth-child(5n + 1) { clear: left; }
+  }
+  
+  @media (max-width: 500px) and (min-width: 351px) {
+    nav .site-nav section { width: calc(50% - 10px); }
+    nav .site-nav section:nth-child(5n + 1) { clear: left; }
+  }
+  
+  @media (max-width: 350px) {
+    nav .site-nav section { width: 100%; }
+    nav .site-nav section:nth-child(5n + 1) { clear: left; }
+  } */

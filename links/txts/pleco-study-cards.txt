@@ -1,0 +1,94 @@
+//Daily/Phrases		
+请再说一次		Could you say one more time?
+用中文怎么说 		In chinese how do you say
+你可以在说一边吗		Could you say that again?
+我不明白		It’s not clear to me
+我明白了		Oh I get it!
+我没听懂		I don’t understand
+真的啊		Really?!
+让我想以下		Let me think for a second
+你下周末有什么计划？		What are you plans next weekend?
+下雨时我喜欢坐在窗前听雨。		When it rains, I like to sit in front of the window and listen to the rain.
+不着到		I don't know.
+//Daily/Week1
+门		door
+椅子		chair
+桌子		table
+电脑		computer
+照片		picture
+画框		picture frame
+灯		lamp
+柜子		dresser
+储餐柜		cabinet
+衣橱		closet
+衣服		clothes
+床		bed
+毯子		blanket
+被子		quilt
+枕头		pillow
+窗		window
+镜子		mirror
+珠宝		jewelry
+洗手间		bathroom
+卧室		bedroom
+办公室		office
+餐厅		dining room
+起居室		living room
+厨房		kitchen
+电视		tv
+沙发		couch
+小地毯		rug
+书架		bookcase
+烤箱		oven
+炉子		stove
+冰箱		refrigderator
+冷冻柜		freezer
+微波炉		microwave
+洗衣机		washing machine
+烘干机		dryer
+自行车		bicycle
+浴		shower
+澡盆		bathtub
+地板		floor
+顶棚		ceiling
+墙壁		wall
+房间		room
+房子		house
+楼梯		stairs
+扇子		fan
+洗碗槽		sink
+盘子		dishes
+鞋子		shoes
+电影		movies
+叉子		fork
+刀子		knife
+勺子		spoon
+筷子		chopsticks
+体恤		shirt
+衬衫		blouse
+裤子		pants
+短裤		shorts
+内裤		underwear
+帽子		hat
+围巾		scarf
+外衣		jacket
+毛衣		sweater
+袜子		socks
+牙刷		toothbrush
+牙膏		toothpaste
+牙线		floss
+肥皂		soap
+剃刀		razor
+梳子		comb		
+//Daily/Colors
+颜色		colors
+红色		red
+橘色		orange
+黄色		yellow
+录色		green
+蓝色		blue
+紫色		purple
+粉色		pink
+棕色		brown
+白色		white
+黑色		black

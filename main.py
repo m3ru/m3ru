@@ -23,9 +23,9 @@ def write_header(fn):
         f.write(f"<title>{NAME}&mdash;{fn}</title></head>")
         f.write("<body>")
         if fn == "home":
-            f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;<img src='../media/namam.png' alt='Sri Vaishnava Namam' width='400' height='82.5'></header>") #<img src='../media/slewis_wiki.gif' width='600' height='80'><br></header>")
+            f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;<img src='../media/namam.png' alt='Sri Vaishnava Namam' width='400' height='100'></header>") #<img src='../media/slewis_wiki.gif' width='600' height='80'><br></header>")
         else:
-            f.write(f"<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;<img src='../media/namam.png' alt='Sri Vaishnava Namam' width='400' height='82.5'></header>")
+            f.write(f"<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;<img src='../media/namam.png' alt='Sri Vaishnava Namam' width='400' height='100'></header>")
         # can loop over header lines and do specific things based on contents
         #for line in head:
             #f.write(line)

@@ -2,7 +2,7 @@ from glob import glob
 from time import time
 global INCL; INCL = "./inc"
 global DEST; DEST = "./site"
-global NAME; NAME = "Gopalan"
+global NAME; NAME = "4D47"
 global DOMAIN; DOMAIN = "m3ru.org"
 global LICENSE; LICENSE = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
 global TABLEOFCONTENTS; TABLEOFCONTENTS = "toc"

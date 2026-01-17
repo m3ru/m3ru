@@ -25,7 +25,7 @@ def write_header(fn):
         if fn == "home":
             f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;<img src='../media/namam.png' alt='Sri Vaishnava Namam' width='400' height='100'></header>") #<img src='../media/slewis_wiki.gif' width='600' height='80'><br></header>")
         else:
-            f.write(f"<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;<img src='../media/namam.png' alt='Sri Vaishnava Namam' width='400' height='100'></header>")
+            f.write(f"<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a></header>")
         # can loop over header lines and do specific things based on contents
         #for line in head:
             #f.write(line)

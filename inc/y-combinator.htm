@@ -1,0 +1,63 @@
+---
+category: learning
+---
+<main>
+  <h2>
+    The Y Combinator Functional
+  </h2>
+
+  <p>
+    The Y combinator is a functional, or higher-order function which takes in as input a non-recursive function and outputs a version of that function which is recursive. It gives us a way to get recursion in any programming language which makes use of first-class functions but that doesn't have recursion baked into it already.
+ </p> 
+
+  <p>
+    The most important Y combinators are the <i> normal-order </i> and the <i>applicative-order</i> Y combinators. These work for lazy-evaluated and strictly-evaluated languages, respectively, with the evaluation type referring to whether the language evaluates only however much of an expression is required to get the result or the entire expression deterministically.  
+</p>
+  <p>
+    Statically typed: Expression types determined at compile time. <br>
+    Dynamically typed: No type-checking until run time. <br>
+    Strongly typed: A value can have only one type. <br>
+    Weakly typed: Some values can have multiple types (consider malloc o/p in C).
+    </p>
+  <h3>
+    What is a combinator? 
+  </h3>
+  <p>
+    A combinator is just a lambda expression with <i>no free variables </i>. This means that there are no variables contained in the body of the expression which have the saem name as one of the arguments of the expression.
+<br>
+<br>
+    For example: (lambda (x) x) is a combinator because the argument x is bound by the lambda expression and thus there are no free variables. <br>So is (lambda (x) (lambda (y) (x y))) since both the x and y are bound. 
+  </p>
+  <p>
+    First we need to get rid of any recursive calls within our function.
+    We can do this by removing the name in the body and replacing this with a parameter, and then simply wrapping the function in another function which takes as argument the parameter. Something like this: <br> <br>
+    <pre>
+    (define factorial-maker <br>
+      (lambda (f) <br>
+        (lambda (n) <br>
+          (if (= n 0) <br>
+            1 <br>
+            (* n (f (- n 1)))))))
+    </pre>
+    where this example defines a <b>functional</b> which takes an input function f and returns a different function, which is the factorial function, <b>completely conditionally</b> on whether f is the correct form (also the factorial function).
+    
+    </p>
+  <p>
+    Now that we have our factorial-maker functional, how can we go about creating factorial functions? Can we (define factorial (factorial-maker factorial))? Actually if your language is lazy-evaluated then yes. <br> <br>
+    The more interesting thing is that applying the factorial-maker functional recursively on the identity function (lambda (x) x) will create a function which can compute one more value of the factorial. What this means is: <br><br>
+    <pre>
+      (define factorial_n
+        (factorial-maker
+          (factorial-maker
+            ...                // n times
+             (factorial-maker identity))))
+    </pre>
+    will actually give you a function factorial_n which can calculate all factorial values from 0 to n (try this out for yourself with a simple version for an exercise). The factorial function that we actually want is the fixpoint of factorial-maker, where a fixpoint of a function is the input which when evaluted by the function is itself. Repeatedly applying cosine to 0, e.g., will result in the function converging to its fixpoint of ~0.739
+    </p>
+  <p>
+    Hi anushka
+  </p>
+  <img src="../media/anushka.png">
+
+  
+</main>

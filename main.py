@@ -22,10 +22,11 @@ def write_header(fn):
         f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, inital-scale=1'/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/main.png' type='image/png' rel='shortcut icon'/>")
         f.write(f"<title>{NAME}&mdash;{fn}</title></head>")
         f.write("<body>")
-        if fn == "home":
-            f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;</header>") #<img src='../media/slewis_wiki.gif' width='600' height='80'><br></header>")
-        else:
-            f.write(f"<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a></header>")
+        f.write("<header></header>")
+        # if fn == "home":
+        #     f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;</header>")
+        # else:
+        #     f.write(f"<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a></header>")
         # can loop over header lines and do specific things based on contents
         #for line in head:
             #f.write(line)

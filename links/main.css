@@ -9,7 +9,7 @@
 }
 
 body {
-  background-color: #fff;
+  background-color: #f5f0ea;
   color: #000;
   overflow-x: hidden;
   font-family: "RLLimo", sans-serif;
@@ -130,6 +130,7 @@ footer {
 }
 footer hr {
   margin-bottom: 15px;
+  margin-right: -45px;
 }
 
 .col2 {
@@ -214,7 +215,7 @@ mark {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #ececec;
+    background-color: #f5f0ea;
     color: rgb(0, 0, 0);
   }
   body header a img {

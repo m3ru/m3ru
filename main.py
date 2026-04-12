@@ -23,7 +23,7 @@ def write_header(fn):
         f.write(f"<title>{NAME}&mdash;{fn}</title></head>")
         f.write("<body>")
         if fn == "home":
-            f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;<img src='../media/namam.png' alt='Sri Vaishnava Namam' width='400' height='100'></header>") #<img src='../media/slewis_wiki.gif' width='600' height='80'><br></header>")
+            f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;</header>") #<img src='../media/slewis_wiki.gif' width='600' height='80'><br></header>")
         else:
             f.write(f"<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a></header>")
         # can loop over header lines and do specific things based on contents
@@ -39,7 +39,7 @@ def write_nav(fn, cat_dict):
         match_cat = next((key for key, values in cat_dict.items() if fn in values), None)
         # reorder categories dictionary alphabetically so it is written that way to the nav
         #key_order = sorted(sorted(cat_dict, key=cat_dict.get))
-        key_order = ["learning", "music", "projects", "meta"] # hardcode
+        key_order = ["writing", "meta", "misc"] # hardcode
         cat_dict_sorted = {key: cat_dict[key] for key in key_order}
         # make nav bar for each page. note which category the current page belongs AND mark current page in bar
         for cat, pages in cat_dict_sorted.items():
@@ -101,9 +101,7 @@ def write_footer(fn, proc=True):
         return
     with open(DEST+'/'+fn+'.html', 'a') as f:
         f.write("<footer><hr />")
-        f.write("<b>Meru Gopalan</b> © 2026 — ")
-        f.write("<a href='" + LICENSE + "' target='_blank'>BY-NC-SA 4.0</a> — ")
-        f.write("Assembled using <a href='https://github.com/seanlabean/astrea'>Astrea</a>")
+        f.write("<b>Meru Gopalan</b> © 2026")
         f.write("</footer>")
         f.write("</body>")
         f.write("</html>")

@@ -19,7 +19,7 @@ def init_site_file(lex_f):
 def write_header(fn):
     with open(DEST+'/'+fn+'.html', 'w') as f:
         f.write("<!DOCTYPE html><html lang='en'>")
-        f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/icon.webp' type='image/webp' rel='shortcut icon'/>")
+        f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><link rel='preload' href='../links/fonts/RLLimoTRIAL-Regular.woff2' as='font' type='font/woff2' crossorigin/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/icon.webp' type='image/webp' rel='shortcut icon'/>")
         f.write(f"<title>{NAME}&mdash;{fn}</title></head>")
         f.write("<body>")
         f.write("<header></header>")

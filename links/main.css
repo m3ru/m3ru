@@ -23,27 +23,35 @@ header {
 
 @font-face {
   font-family: "RLLimo";
-  src: url("./fonts/RLLimoTRIAL-Regular.ttf");
+  src: url("./fonts/RLLimoTRIAL-Regular.woff2") format("woff2"),
+       url("./fonts/RLLimoTRIAL-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "RLLimo";
-  src: url("./fonts/RLLimoTRIAL-Bold.ttf");
+  src: url("./fonts/RLLimoTRIAL-Bold.woff2") format("woff2"),
+       url("./fonts/RLLimoTRIAL-Bold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "RLLimo";
-  src: url("./fonts/RLLimoTRIAL-Italic.ttf");
+  src: url("./fonts/RLLimoTRIAL-Italic.woff2") format("woff2"),
+       url("./fonts/RLLimoTRIAL-Italic.ttf") format("truetype");
   font-weight: normal;
   font-style: italic;
+  font-display: swap;
 }
 @font-face {
   font-family: "RLLimo";
-  src: url("./fonts/RLLimoTRIAL-BoldItalic.ttf");
+  src: url("./fonts/RLLimoTRIAL-BoldItalic.woff2") format("woff2"),
+       url("./fonts/RLLimoTRIAL-BoldItalic.ttf") format("truetype");
   font-weight: bold;
   font-style: italic;
+  font-display: swap;
 }
 
 nav {

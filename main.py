@@ -18,7 +18,7 @@ def init_site_file(lex_f):
 
 def write_header(fn):
     with open(DEST+'/'+fn+'.html', 'w') as f:
-        f.write("<!DOCTYPE html><html lang='en'>")
+        f.write("<!DOCTYPE html><html lang='en'><head>")
         f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><link rel='preload' href='../links/fonts/RLLimoTRIAL-Regular.woff2' as='font' type='font/woff2' crossorigin/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/icon.webp' type='image/webp' rel='shortcut icon'/>")
         f.write(f"<title>{NAME}&mdash;{fn}</title></head>")
         f.write("<body>")
@@ -40,7 +40,8 @@ def write_nav(fn, cat_dict):
         match_cat = next((key for key, values in cat_dict.items() if fn in values), None)
         # reorder categories dictionary alphabetically so it is written that way to the nav
         #key_order = sorted(sorted(cat_dict, key=cat_dict.get))
-        key_order = ["writing", "meta", "misc"] # hardcode
+        preferred = ["writing", "meta", "misc"] # hardcoded order; any other categories follow alphabetically
+        key_order = [k for k in preferred if k in cat_dict] + sorted(k for k in cat_dict if k not in preferred)
         cat_dict_sorted = {key: cat_dict[key] for key in key_order}
         # make nav bar for each page. note which category the current page belongs AND mark current page in bar
         for cat, pages in cat_dict_sorted.items():
@@ -52,12 +53,8 @@ def write_nav(fn, cat_dict):
                 if page == fn else f.write(f"<li><a href='{page}.html'>{page}</a></li>\n")
             f.write("</ul>\n")
             f.write("</section>\n")
-        f.write("<section><ul class='nobull capital'>")
-        # turning off toc in nav bar for now. cleaner. SCL 02-25-24
-        #f.write("<li><a href='"+TABLEOFCONTENTS+".html'>garden contents</a></li>\n</section>\n")
-        #f.write("<li><a href='http://users3.smartgb.com/g/g.php?a=s&i=g36-35839-fb' target='_blank' rel='noopener noreferrer'><img alt='Guestbook' border='0' src='../media/refs/gb_80x40.gif' width='80' height='40'></a></li>")
         f.write("</section>\n")
-        f.write("</details></nav>\n")
+        f.write("</nav>\n")
         f.write("<!-- Generated file, do not edit -->\n")
     return
 
@@ -92,8 +89,12 @@ def parse_body(lex_f, fn, cat_dict, proc=True):
         if proc:
             write_header(fn)
             write_nav(fn, cat_dict)
-        for line in body_lines:
-            f.write(line)
+        body = ''.join(body_lines)
+        # Pages pasted straight from a markdown converter have no <main> wrapper;
+        # without it the content floats around the nav instead of forming the content column.
+        if proc and '<main' not in body:
+            body = "<main>\n" + body + "</main>\n"
+        f.write(body)
 
         f.close()
 

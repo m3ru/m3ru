@@ -1,24 +1,30 @@
+/* m3ru.org — Typora-flavoured stylesheet.
+   Layout: <header> spacer, <nav> floated left, <main> floated left, <footer> clears.
+   Everything inside <main> is styled like a Typora markdown document. */
+
+:root {
+  color-scheme: light;
+  --bg: #f5f0ea;
+  --fg: #2f2f2f;
+  --muted: #6b6b6b;
+  --link: #1f4e79;
+  --quote-bg: #ece7db;
+  --quote-border: #c9c3b2;
+  --quote-fg: #4a4a4a;
+  --code-bg: #ebe6da;
+  --rule: #d9d3c5;
+  --font-body: "RLLimo", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono",
+    "DejaVu Sans Mono", "Courier New", monospace;
+  --content-width: 840px;
+}
+
 *:focus {
   outline: none;
 }
 ::selection {
   background-color: #5f5f5f;
-  opacity: 1;
   color: #ffffff;
-  padding: 10px; /* Safari */
-}
-
-body {
-  background-color: #f5f0ea;
-  color: #000;
-  overflow-x: hidden;
-  font-family: "RLLimo", sans-serif;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-}
-header {
-  padding: 30px;
 }
 
 @font-face {
@@ -54,82 +60,199 @@ header {
   font-display: swap;
 }
 
+html {
+  background-color: var(--bg);
+}
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+}
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:hover {
+  color: #ffffff;
+  background-color: #000000;
+}
+a.blank:hover {
+  color: unset;
+  background-color: unset;
+}
+
+header {
+  padding: 30px;
+}
+
+/* ---------- Site navigation (left column) ---------- */
+
 nav {
   padding: 45px;
   margin-top: -45px;
   float: left;
-}
-nav details summary {
-  margin-bottom: 30px;
 }
 nav .site-nav section {
   line-height: 22px;
   margin-bottom: 25px;
 }
 nav .site-nav section h2 {
+  font-size: 1.15em;
+  font-weight: bold;
   margin: 20px 0 10px 0;
+  color: var(--fg);
 }
 nav .site-nav section ul {
-  margin: 0px;
-  padding: 0px;
-}
-/* nav h2.self:before { content:"[" }
-nav h2.self:after { content:"]" } */
-nav h2 {
-  color: rgb(0, 0, 0);
+  margin: 0;
+  padding: 0;
 }
 nav a.self:before {
   content: "> ";
 }
-/*nav a.self:after { content:">" }*/
-/* nav a.self { color:#fff} */
+
+/* ---------- Content column, styled like a Typora document ---------- */
 
 main {
-  padding: 15px;
   float: left;
-  max-width: 1000px;
+  box-sizing: border-box;
+  max-width: var(--content-width);
+  padding: 0 30px 30px 30px;
 }
-main p {
-  line-height: 1.5;
+
+main h1,
+main h2,
+main h3,
+main h4,
+main h5,
+main h6 {
+  font-weight: bold;
+  line-height: 1.3;
+  margin: 1.6em 0 0.8em 0;
 }
+main h1 { font-size: 2em; }
+main h2 { font-size: 1.6em; }
+main h3 { font-size: 1.3em; }
+main h4 { font-size: 1.1em; }
+main h5,
+main h6 { font-size: 1em; }
+main > h1:first-child,
+main > h2:first-child,
+main > h3:first-child {
+  margin-top: 0.2em;
+}
+
+main p,
+main ul,
+main ol,
+main dl,
+main pre,
+main blockquote,
+main table,
+main figure,
+main hr {
+  margin: 0 0 1em 0;
+}
+
+main blockquote {
+  margin: 1.2em 0;
+  padding: 0.75em 1.25em;
+  border-left: 4px solid var(--quote-border);
+  background-color: var(--quote-bg);
+  color: var(--quote-fg);
+}
+main blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+main code {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  background-color: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+main pre {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  line-height: 1.45;
+  background-color: var(--code-bg);
+  padding: 1em;
+  border-radius: 3px;
+  overflow-x: auto;
+}
+main pre code {
+  font-size: inherit;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+main ul,
+main ol {
+  padding-left: 2em;
+}
+main li {
+  margin: 0.25em 0;
+}
+main li > p {
+  margin-bottom: 0.5em;
+}
+
+main hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2em 0;
+}
+
+main table {
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+}
+main th,
+main td {
+  border: 1px solid var(--rule);
+  padding: 0.4em 0.8em;
+  text-align: left;
+}
+main th {
+  background-color: var(--code-bg);
+  font-weight: bold;
+}
+
+main img {
+  max-width: 100%;
+  height: auto;
+}
+main figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+main figcaption {
+  color: var(--muted);
+  font-size: 0.9em;
+  margin-top: 0.4em;
+  clear: both;
+}
+
 main article {
   border-left: 5px solid #ffffff;
   padding-left: 25px;
   clear: both;
 }
-main img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 5px;
-  padding: 5px;
+main q {
+  font-style: italic;
+  display: block;
+  max-width: 450px;
 }
-main figure {
-  margin-left: -2px;
-}
-main figcaption {
-  margin-bottom: 15px;
-  clear: both;
-}
-main a:before {
-  content: "{";
-}
-main a:after {
-  content: "}";
-}
-main a.blank:before {
-  content: "";
-}
-main a.blank:after {
-  content: "";
-}
-main > * {
-  max-width: 900px;
-  margin-bottom: 30px;
-}
-main code {
-  font-family: monospace;
-  font-size: 130%;
-}
+
+/* ---------- Footer ---------- */
 
 footer {
   line-height: 30px;
@@ -137,9 +260,12 @@ footer {
   padding: 45px;
 }
 footer hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
   margin-bottom: 15px;
-  margin-right: -45px;
 }
+
+/* ---------- Utilities used by individual pages ---------- */
 
 .col2 {
   columns: 2;
@@ -154,13 +280,11 @@ footer hr {
   width: 48%;
   padding: 5px;
 }
-/* Clearfix (clear floats) */
 .row::after {
   content: "";
   clear: both;
   display: table;
 }
-/*.capital { text-transform: capitalize }*/
 .notice {
   padding: 20px;
   border: 2px solid black;
@@ -179,12 +303,15 @@ mark {
   background-color: #b9b9b9;
   color: black;
 }
+select {
+  color: black;
+  background-color: white;
+}
 
 /* Resume collapsible checkbox hack */
 .resume-toggle-checkbox {
   display: none;
 }
-
 .resume-toggle-label {
   display: block;
   cursor: pointer;
@@ -192,17 +319,14 @@ mark {
   padding: 10px 0;
   user-select: none;
 }
-
 .resume-toggle-label:hover {
   opacity: 0.7;
 }
-
 .resume-collapsible {
   max-height: 0;
   overflow: hidden;
   opacity: 0;
 }
-
 .resume-toggle-checkbox:checked ~ .resume-collapsible {
   max-height: 850px;
   opacity: 1;
@@ -210,112 +334,48 @@ mark {
     max-height 0.4s ease-in,
     opacity 0.3s ease-in;
 }
-
 .resume-toggle-checkbox:checked + .resume-toggle-label::before {
   content: "▲ ";
 }
-
 .resume-toggle-checkbox:not(:checked) + .resume-toggle-label::before {
   content: "▼ ";
 }
 
-/* Theme */
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #f5f0ea;
-    color: rgb(0, 0, 0);
-  }
-  body header a img {
-    filter: invert(1);
-  }
-  body a {
-    color: rgb(27, 27, 27);
-  }
-  body a:hover {
-    color: rgb(255, 255, 255);
-    background-color: #000000;
-  }
-  body a.blank:hover {
-    color: unset;
-    background-color: unset;
-  }
-  body a.self:before {
-    content: "> ";
-  }
-  main > pre {
-    overflow: auto;
-    background-color: white;
-    color: #000;
-    padding: 10px;
-  }
-  main > code {
-    background-color: white;
-    color: #000;
-  }
-  body select {
-    color: black;
-    background-color: white;
-  }
-  main .project {
-    border-left: 2px solid white;
-  }
-  .notice {
-    border-color: white;
-  }
-  .mono {
-    filter: invert(1);
-  }
-  main .progress > div {
-    background-color: white;
-  }
-  main .progress > div > span {
-    color: black;
-  }
-  main q {
-    font-family: serif;
-    font-size: 18px;
-    font-style: italic;
-    display: block;
-    max-width: 450px;
-  }
-}
-
-/* Mobile */
+/* ---------- Narrow screens: nav becomes a row above the content ---------- */
 
 @media (max-width: 1100px) {
   nav {
+    float: none;
     width: 100%;
+    box-sizing: border-box;
+    padding: 0 30px 15px 30px;
+    margin-top: 0;
   }
   nav .site-nav section {
     float: left;
-    margin: 0 10px 10px 0;
+    margin: 0 30px 10px 0;
   }
-  nav .site-nav section:nth-child(5n + 1) {
-    clear: left;
+  nav .site-nav::after {
+    content: "";
+    clear: both;
+    display: table;
   }
-}
-@media (max-width: 1100px) and (min-width: 651px) {
-  nav .site-nav section {
-    width: calc(25% - 10px);
-  }
-  nav .site-nav section:nth-child(5n + 1) {
-    clear: left;
+  main {
+    float: none;
+    max-width: none;
   }
 }
-
-/* @media (max-width: 650px) and (min-width: 501px) {
-    nav .site-nav section { width: calc(33% - 10px); }
-    nav .site-nav section:nth-child(5n + 1) { clear: left; }
+@media (max-width: 600px) {
+  body {
+    font-size: 15px;
   }
-  
-  @media (max-width: 500px) and (min-width: 351px) {
-    nav .site-nav section { width: calc(50% - 10px); }
-    nav .site-nav section:nth-child(5n + 1) { clear: left; }
+  header {
+    padding: 15px;
   }
-  
-  @media (max-width: 350px) {
-    nav .site-nav section { width: 100%; }
-    nav .site-nav section:nth-child(5n + 1) { clear: left; }
-  } */
-
+  nav {
+    padding: 0 20px 10px 20px;
+  }
+  main {
+    padding: 0 20px 20px 20px;
+  }
+}

@@ -1,7 +1,10 @@
 from glob import glob
 from time import time
 import argparse
+from hashlib import sha256
+from pathlib import Path
 from reading import load_build_selection, render_selection
+ASSET_ROOT = Path(__file__).resolve().parent
 global INCL; INCL = "./inc"
 global DEST; DEST = "./site"
 global NAME; NAME = "4D47"
@@ -18,10 +21,17 @@ def init_site_file(lex_f):
     with open(DEST+'/'+fn+'.html', 'w') as f:
         return f, fn
 
+def versioned_asset(path):
+    # A new URL for changed content bypasses stale browser and CDN cache entries.
+    version = sha256((ASSET_ROOT / path).read_bytes()).hexdigest()[:12]
+    return f"../{path}?v={version}"
+
 def write_header(fn):
+    stylesheet = versioned_asset("links/main.css")
+    theme_script = versioned_asset("links/theme.js")
     with open(DEST+'/'+fn+'.html', 'w') as f:
         f.write("<!DOCTYPE html><html lang='en'><head>")
-        f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='color-scheme' content='light dark'/><script src='../links/theme.js'></script><link rel='preload' href='../links/fonts/RLLimoTRIAL-Regular.woff2' as='font' type='font/woff2' crossorigin/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/icon.webp' type='image/webp' rel='shortcut icon'/>")
+        f.write(f"<meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='color-scheme' content='light dark'/><script src='{theme_script}'></script><link rel='preload' href='../links/fonts/RLLimoTRIAL-Regular.woff2' as='font' type='font/woff2' crossorigin/><link href='{stylesheet}' type='text/css' rel='stylesheet'/><link href='../media/icon.webp' type='image/webp' rel='shortcut icon'/>")
         f.write(f"<title>{NAME}&mdash;{fn}</title></head>")
         f.write("<body class='page-home'>" if fn == "home" else "<body>")
         f.write("<header></header>")

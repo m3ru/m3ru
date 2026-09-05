@@ -7,8 +7,16 @@
 /links/main.css
   Cache-Control: public, max-age=86400
 
-/*.html
-  Cache-Control: public, max-age=3600
+/links/theme.js
+  Cache-Control: public, max-age=86400
 
-/site/*.html
-  Cache-Control: public, max-age=3600
+# Pages must pick up new content and versioned CSS/JS URLs after a deploy.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Includes Cloudflare's extensionless URLs as well as .html URLs.
+/site/*
+  Cache-Control: public, max-age=0, must-revalidate

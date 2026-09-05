@@ -1,5 +1,7 @@
 from glob import glob
 from time import time
+import argparse
+from reading import load_build_selection, render_selection
 global INCL; INCL = "./inc"
 global DEST; DEST = "./site"
 global NAME; NAME = "4D47"
@@ -19,9 +21,9 @@ def init_site_file(lex_f):
 def write_header(fn):
     with open(DEST+'/'+fn+'.html', 'w') as f:
         f.write("<!DOCTYPE html><html lang='en'><head>")
-        f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><link rel='preload' href='../links/fonts/RLLimoTRIAL-Regular.woff2' as='font' type='font/woff2' crossorigin/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/icon.webp' type='image/webp' rel='shortcut icon'/>")
+        f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='color-scheme' content='light dark'/><script src='../links/theme.js'></script><link rel='preload' href='../links/fonts/RLLimoTRIAL-Regular.woff2' as='font' type='font/woff2' crossorigin/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/icon.webp' type='image/webp' rel='shortcut icon'/>")
         f.write(f"<title>{NAME}&mdash;{fn}</title></head>")
-        f.write("<body>")
+        f.write("<body class='page-home'>" if fn == "home" else "<body>")
         f.write("<header></header>")
         # if fn == "home":
         #     f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a>&nbsp;&nbsp;&nbsp;&nbsp;</header>")
@@ -34,7 +36,7 @@ def write_header(fn):
     
 def write_nav(fn, cat_dict):
     with open(DEST+'/'+fn+'.html', 'a') as f:
-        f.write("<nav>\n")
+        f.write("<nav aria-label='Site navigation'>\n")
         f.write("<section class='site-nav'>\n")
         # find this filename as a value in the category dict. Return the category.
         match_cat = next((key for key, values in cat_dict.items() if fn in values), None)
@@ -46,10 +48,10 @@ def write_nav(fn, cat_dict):
         # make nav bar for each page. note which category the current page belongs AND mark current page in bar
         for cat, pages in cat_dict_sorted.items():
             if cat == 'no-proc': continue
-            f.write("<section>\n")
+            f.write(f"<section class='nav-{cat}'>\n")
             f.write(f"<h2 class='self'>{cat}&nbsp;</h2>\n") if cat == match_cat else f.write(f"<h2>{cat}&nbsp;</h2>\n")
             f.write("<ul class='nobull capital'>\n")
-            for page in sorted(pages): f.write(f"<li><mark><a href='{page}.html' class='self'>{page}</a></mark></li>\n") \
+            for page in sorted(pages): f.write(f"<li><mark><a href='{page}.html' class='self' aria-current='page'>{page}</a></mark></li>\n") \
                 if page == fn else f.write(f"<li><a href='{page}.html'>{page}</a></li>\n")
             f.write("</ul>\n")
             f.write("</section>\n")
@@ -71,7 +73,7 @@ def write_toc_body(cat_dict):
         f.write("</p></article></main>")
         f.close()
 
-def parse_body(lex_f, fn, cat_dict, proc=True):
+def parse_body(lex_f, fn, cat_dict, proc=True, reading_html=""):
     with open(lex_f) as inc:
         # SLICE out and process header lines
         inc_lines = inc.readlines()
@@ -90,6 +92,9 @@ def parse_body(lex_f, fn, cat_dict, proc=True):
             write_header(fn)
             write_nav(fn, cat_dict)
         body = ''.join(body_lines)
+        if fn == "home":
+            body = body.replace("  <!-- CURRENTLY_READING -->\n",
+                                f"  {reading_html}\n" if reading_html else "")
         # Pages pasted straight from a markdown converter have no <main> wrapper;
         # without it the content floats around the nav instead of forming the content column.
         if proc and '<main' not in body:
@@ -103,7 +108,12 @@ def write_footer(fn, proc=True):
         return
     with open(DEST+'/'+fn+'.html', 'a') as f:
         f.write("<footer><hr />")
-        f.write("<b>Meru Gopalan</b> © 2026")
+        f.write("<div class='footer-meta'><span><b>Meru Gopalan</b> © 2026</span>")
+        f.write("<button class='theme-toggle' type='button' aria-label='Switch to dark mode' title='Switch to dark mode' hidden>")
+        f.write("<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'>")
+        f.write("<path class='theme-moon' d='M20.5 13.1A8.5 8.5 0 1 1 10.9 3.5a6.5 6.5 0 0 0 9.6 9.6Z'/>")
+        f.write("<g class='theme-sun'><circle cx='12' cy='12' r='4'/><path d='M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42'/></g>")
+        f.write("</svg></button></div>")
         f.write("</footer>")
         f.write("</body>")
         f.write("</html>")
@@ -143,7 +153,9 @@ def finalize(f, fn):
     except:
         print(f"Error processing file {fn}")
 
-def engine():
+def engine(offline=False):
+    # Refresh and validate before opening generated files; offline builds use the snapshot.
+    reading_html = render_selection(load_build_selection(offline=offline))
     lex = lexicon()
     i=1
     # preprocess loop to get table of contents (which files belong to which categories)
@@ -160,11 +172,13 @@ def engine():
         f, fn = init_site_file(lex_f)
         proc = False if lex_f in files_not_to_process else True
             
-        parse_body(lex_f, fn, categories, proc)
+        parse_body(lex_f, fn, categories, proc, reading_html)
         write_footer(fn, proc)
         finalize(f, fn)
         print(f"{str(i).zfill(2)}/{len(lex)} :: {fn}"); i += 1
     tick = time()
     print(f"Processed {len(lex)} files in {1000*(tick-tock):.5} miliseconds.")
 if __name__ == "__main__":
-    engine()
+    parser = argparse.ArgumentParser(description="Build the site from inc/.")
+    parser.add_argument("--offline", action="store_true", help="use saved reading links without contacting Histre")
+    engine(offline=parser.parse_args().offline)

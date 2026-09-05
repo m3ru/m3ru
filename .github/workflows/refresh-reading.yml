@@ -1,0 +1,33 @@
+name: Refresh currently reading
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions: {}
+
+concurrency:
+  group: refresh-currently-reading
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      DEPLOY_HOOK_URL: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+    steps:
+      - name: Request a Cloudflare rebuild
+        shell: bash
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo '::notice::Scheduled refresh is not connected. Set the CLOUDFLARE_DEPLOY_HOOK repository secret.'
+            exit 0
+          fi
+          case "$DEPLOY_HOOK_URL" in
+            https://api.cloudflare.com/client/v4/*) ;;
+            *) echo '::error::Expected a Cloudflare deploy-hook URL.'; exit 1 ;;
+          esac
+          curl --fail --silent --show-error --connect-timeout 10 --max-time 30 \
+            --request POST --output /dev/null "$DEPLOY_HOOK_URL"

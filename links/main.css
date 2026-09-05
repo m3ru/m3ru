@@ -1,30 +1,40 @@
-/* m3ru.org — Typora-flavoured stylesheet.
-   Layout: <header> spacer, <nav> floated left, <main> floated left, <footer> clears.
-   Everything inside <main> is styled like a Typora markdown document. */
+/* m3ru.org — a quiet reading layout with a shared article/footer column. */
 
 :root {
-  color-scheme: light;
-  --bg: #f5f0ea;
-  --fg: #2f2f2f;
-  --muted: #6b6b6b;
-  --link: #1f4e79;
-  --quote-bg: #ece7db;
-  --quote-border: #c9c3b2;
-  --quote-fg: #4a4a4a;
-  --code-bg: #ebe6da;
-  --rule: #d9d3c5;
+  color-scheme: light dark;
+  --bg: light-dark(#f5f0ea, #211e1b);
+  --fg: light-dark(#2f2f2f, #e7e0d6);
+  --muted: light-dark(#6b6b6b, #b5aa9c);
+  --link: light-dark(#1f4e79, #a5bfd0);
+  --link-hover: light-dark(#163a5a, #d1e3ef);
+  --quote-border: light-dark(#c9c3b2, #625448);
+  --code-bg: light-dark(#ebe6da, #2c2723);
+  --rule: light-dark(#d9d3c5, #443c34);
+  --selection-bg: light-dark(#5f5f5f, #655445);
+  --selection-fg: light-dark(#ffffff, #fff8ee);
+  --mark-bg: light-dark(#e5dcc7, #4b4235);
   --font-body: "RLLimo", sans-serif;
+  --font-sanskrit: "Noto Serif Devanagari", serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono",
     "DejaVu Sans Mono", "Courier New", monospace;
-  --content-width: 840px;
+  --content-width: 790px;
 }
 
-*:focus {
-  outline: none;
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
 }
 ::selection {
-  background-color: #5f5f5f;
-  color: #ffffff;
+  background-color: var(--selection-bg);
+  color: var(--selection-fg);
 }
 
 @font-face {
@@ -51,6 +61,16 @@
   font-style: italic;
   font-display: swap;
 }
+
+@font-face {
+  font-family: "Noto Serif Devanagari";
+  src: url("./fonts/NotoSerifDevanagari.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9,
+    U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
 @font-face {
   font-family: "RLLimo";
   src: url("./fonts/RLLimoTRIAL-BoldItalic.woff2") format("woff2"),
@@ -64,14 +84,20 @@ html {
   background-color: var(--bg);
 }
 body {
+  display: grid;
+  grid-template-columns: max-content minmax(0, var(--content-width));
   background-color: var(--bg);
   color: var(--fg);
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-  overflow-x: hidden;
+  font-size: 17px;
+  line-height: 1.7;
   padding: 0;
   margin: 0;
+}
+.page-home {
+  --content-width: 840px;
+  font-size: 16px;
+  line-height: 1.6;
 }
 a {
   color: var(--link);
@@ -79,47 +105,54 @@ a {
   text-underline-offset: 2px;
 }
 a:hover {
-  color: #ffffff;
-  background-color: #000000;
-}
-a.blank:hover {
-  color: unset;
-  background-color: unset;
+  color: var(--link-hover);
+  text-decoration-thickness: 2px;
 }
 
 header {
+  grid-column: 1 / -1;
   padding: 30px;
 }
 
 /* ---------- Site navigation (left column) ---------- */
 
 nav {
+  grid-column: 1;
+  align-self: start;
+  font-size: 16px;
   padding: 45px;
   margin-top: -45px;
-  float: left;
 }
 nav .site-nav section {
   line-height: 22px;
   margin-bottom: 25px;
 }
 nav .site-nav section h2 {
-  font-size: 1.15em;
-  font-weight: bold;
+  font-size: 0.85em;
+  font-weight: normal;
+  letter-spacing: 0.02em;
   margin: 20px 0 10px 0;
-  color: var(--fg);
+  color: var(--muted);
 }
 nav .site-nav section ul {
   margin: 0;
   padding: 0;
 }
-nav a.self:before {
-  content: "> ";
+nav mark {
+  background: transparent;
+}
+nav a.self {
+  color: var(--fg);
+  font-weight: bold;
+  text-decoration: none;
 }
 
 /* ---------- Content column, styled like a Typora document ---------- */
 
 main {
-  float: left;
+  grid-column: 2;
+  min-width: 0;
+  width: 100%;
   box-sizing: border-box;
   max-width: var(--content-width);
   padding: 0 30px 30px 30px;
@@ -136,7 +169,8 @@ main h6 {
   margin: 1.6em 0 0.8em 0;
 }
 main h1 { font-size: 2em; }
-main h2 { font-size: 1.6em; }
+main h2 { font-size: 1.7em; }
+.page-home main h2 { font-size: 1.6em; }
 main h3 { font-size: 1.3em; }
 main h4 { font-size: 1.1em; }
 main h5,
@@ -160,11 +194,9 @@ main hr {
 }
 
 main blockquote {
-  margin: 1.2em 0;
-  padding: 0.75em 1.25em;
-  border-left: 4px solid var(--quote-border);
-  background-color: var(--quote-bg);
-  color: var(--quote-fg);
+  margin: 1.4em 0;
+  padding: 0 0 0 1.2em;
+  border-left: 1px solid var(--quote-border);
 }
 main blockquote > :last-child {
   margin-bottom: 0;
@@ -242,7 +274,7 @@ main figcaption {
 }
 
 main article {
-  border-left: 5px solid #ffffff;
+  border-left: 1px solid var(--rule);
   padding-left: 25px;
   clear: both;
 }
@@ -252,17 +284,135 @@ main q {
   max-width: 450px;
 }
 
+/* Original text and translation stay paired, including on narrow screens. */
+.verse-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.75em;
+  margin: 1.5em 0;
+  align-items: first baseline;
+}
+.verse-pair > * {
+  min-width: 0;
+}
+.verse-pair [lang="sa"] {
+  font-family: var(--font-sanskrit);
+  font-size: 1.15em;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+.verse-translation {
+  margin: 0;
+}
+main .verse-steps {
+  margin: 1.5em 0;
+}
+/* Short name/action pairs share a row even when an instruction wraps. */
+.verse-steps .verse-pair {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin: 0;
+}
+.verse-steps dt,
+.verse-steps dd {
+  margin: 0;
+}
+
+/* ---------- Home and essay details ---------- */
+
+.muted-text {
+  color: var(--muted);
+}
+
+.home-portrait {
+  float: right;
+  width: 160px;
+  height: auto;
+  aspect-ratio: 160 / 213;
+  margin: 0 0 15px 25px;
+}
+
+main .page-meta {
+  color: var(--muted);
+  font-size: 0.875em;
+  margin-top: -0.6em;
+  margin-bottom: 1.8em;
+}
+
+.selected-writing {
+  clear: both;
+  margin-top: 2em;
+  padding-top: 1.25em;
+  border-top: 1px solid var(--rule);
+}
+.currently-reading {
+  margin-top: 1.75em;
+}
+main .selected-writing h3,
+main .currently-reading h3 {
+  font-size: 1.1em;
+  margin: 0 0 0.65em;
+}
+main .selected-writing ul,
+main .currently-reading ul {
+  padding: 0;
+  margin: 0;
+}
+main .selected-writing li,
+main .currently-reading li {
+  margin: 0.45em 0;
+}
+
 /* ---------- Footer ---------- */
 
 footer {
-  line-height: 30px;
-  clear: both;
-  padding: 45px;
+  grid-column: 2;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--content-width);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  padding: 35px 30px 45px;
 }
 footer hr {
   border: 0;
   border-top: 1px solid var(--rule);
-  margin-bottom: 15px;
+  margin: 0 0 15px;
+}
+.footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.theme-toggle:hover {
+  color: var(--fg);
+}
+.theme-toggle[hidden],
+.theme-toggle .theme-sun,
+.theme-toggle[data-theme="dark"] .theme-moon {
+  display: none;
+}
+.theme-toggle[data-theme="dark"] .theme-sun {
+  display: block;
+}
+.theme-toggle svg {
+  width: 22px;
+  height: 22px;
 }
 
 /* ---------- Utilities used by individual pages ---------- */
@@ -287,7 +437,7 @@ footer hr {
 }
 .notice {
   padding: 20px;
-  border: 2px solid black;
+  border: 2px solid var(--fg);
 }
 .dot {
   height: 25px;
@@ -300,12 +450,12 @@ ul.nobull li {
   list-style-type: none;
 }
 mark {
-  background-color: #b9b9b9;
-  color: black;
+  background-color: var(--mark-bg);
+  color: var(--fg);
 }
 select {
-  color: black;
-  background-color: white;
+  color: var(--fg);
+  background-color: var(--bg);
 }
 
 /* Resume collapsible checkbox hack */
@@ -344,8 +494,10 @@ select {
 /* ---------- Narrow screens: nav becomes a row above the content ---------- */
 
 @media (max-width: 1100px) {
+  body {
+    grid-template-columns: minmax(0, 1fr);
+  }
   nav {
-    float: none;
     width: 100%;
     box-sizing: border-box;
     padding: 0 30px 15px 30px;
@@ -360,22 +512,71 @@ select {
     clear: both;
     display: table;
   }
-  main {
-    float: none;
-    max-width: none;
+  main,
+  footer {
+    grid-column: 1;
+  }
+}
+@media (max-width: 700px) {
+  .verse-pair {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.65em;
+    margin: 1.75em 0;
+  }
+  .verse-steps .verse-pair {
+    column-gap: 1em;
+    padding: 0.2em 0;
   }
 }
 @media (max-width: 600px) {
   body {
-    font-size: 15px;
+    font-size: 16px;
   }
   header {
     padding: 15px;
   }
   nav {
-    padding: 0 20px 10px 20px;
+    font-size: 15px;
+    padding: 0 20px 24px;
+  }
+  nav .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+  nav .site-nav section {
+    float: none;
+    margin: 0;
+  }
+  nav .site-nav .nav-meta {
+    order: -1;
+  }
+  nav .site-nav section h2 {
+    display: none;
+  }
+  nav .site-nav section ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+  nav .site-nav a {
+    display: inline-block;
+    padding: 3px 0;
+  }
+  nav .site-nav::after {
+    content: none;
   }
   main {
     padding: 0 20px 20px 20px;
+  }
+  .home-portrait {
+    width: 80px;
+    margin: 0 0 16px 20px;
+  }
+  .home-bio {
+    clear: both;
+  }
+  footer {
+    padding: 30px 20px;
   }
 }

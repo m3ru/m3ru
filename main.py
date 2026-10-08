@@ -129,6 +129,10 @@ def write_footer(fn, proc=True):
         f.write("</html>")
 
 def preparse_header(lex_f, fn, categories):
+    # Keep Uptake directly addressable while excluding it from site navigation
+    # and the generated table of contents.
+    if fn.lower() == "uptake":
+        return categories
     with open(lex_f) as inc:
         # SLICE out and process header lines
         inc_lines = inc.readlines()
